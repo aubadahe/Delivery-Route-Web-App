@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delivery Route</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      max-width: 600px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      font-size: 16px;
+    }
+    .stop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .stop-buttons button {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Delivery Stops</h2>
+  <input type="text" id="addressInput" placeholder="Enter postcode or address" />
+  <button onclick="addStop()">Add Stop</button>
+
+  <div id="stopsList"></div>
+
+  <script>
+    let stops = [];
+
+    // Load saved stops from localStorage
+    function loadStops() {
+      const saved = localStorage.getItem('deliveryStops');
+      if (saved) {
+        stops = JSON.parse(saved);
+        renderStops();
+      }
+    }
+
+    function saveStops() {
+      localStorage.setItem('deliveryStops', JSON.stringify(stops));
+    }
+
+    function addStop() {
+      const input = document.getElementById('addressInput');
+      const address = input.value.trim();
+      if (address === '') return;
+      stops.push(address);
+      input.value = '';
+      saveStops();
+      renderStops();
+    }
+
+    function deleteStop(index) {
+      stops.splice(index, 1);
+      saveStops();
+      renderStops();
+    }
+
+    function renderStops() {
+      const list = document.getElementById('stopsList');
+      list.innerHTML = '';
+      stops.forEach((stop, index) => {
+        const div = document.createElement('div');
+        div.className = 'stop';
+
+        const addressText = document.createElement('span');
+        addressText.textContent = stop;
+
+        const buttons = document.createElement('div');
+        buttons.className = 'stop-buttons';
+
+        const navBtn = document.createElement('button');
+        navBtn.textContent = 'Navigate';
+        navBtn.onclick = () => {
+          const encoded = encodeURIComponent(stop);
+          window.open(`https://www.google.com/maps/dir/?api=1&destination=${encoded}`, '_blank');
+        };
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.onclick = () => deleteStop(index);
+
+        buttons.appendChild(navBtn);
+        buttons.appendChild(delBtn);
+
+        div.appendChild(addressText);
+        div.appendChild(buttons);
+
+        list.appendChild(div);
+      });
+    }
+
+    // Initialize app
+    loadStops();
+  </script>
+</body>
+</html>
