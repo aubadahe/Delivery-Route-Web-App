@@ -31,26 +31,63 @@
   </style>
 </head>
 <body>
-  <h2>Delivery Stops</h2>
+  <h2>Delivery Stops (37 Total)</h2>
   <input type="text" id="addressInput" placeholder="Enter postcode or address" />
   <button onclick="addStop()">Add Stop</button>
 
   <div id="stopsList"></div>
 
   <script>
-    let stops = [];
+    let stops = [
+      "1. SK4 2PF – GoLocal Stockport Express, InPost Locker",
+      "2. SK4 2PF – IPS Go Local, InPost Locker",
+      "3. SK4 2NA – IPS Morrisons Daily, InPost Locker",
+      "4. SK4 2QN – Esso Wellington Road, InPost Locker",
+      "5. SK5 7NZ – Mabco Petroleum Stockport, InPost Locker",
+      "6. SK5 7RP – Select and Save, InPost Locker",
+      "7. SK5 7LN – Reddish Working Mens Club, InPost Locker",
+      "8. SK5 7HR – IPS Morrisons Daily, InPost Locker",
+      "9. SK5 7EW – Shell Yew Tree, InPost Locker",
+      "10. SK5 7EW – Cheshire Central Car Wash, InPost Locker",
+      "11. SK4 7AA – IPS Morrisons Daily, InPost Locker",
+      "12. SK5 7AE – MORRISONS Reddish, InPost Locker",
+      "13. SK4 5JS – Keswick Stores Go Local Extra, InPost Locker",
+      "14. SK5 7AE – Texaco Broadstone Road, InPost Locker",
+      "15. SK5 6AH – Londis Gorton Road, InPost Locker",
+      "16. SK5 6AH – Local Express, InPost Locker",
+      "17. SK5 6QG – IPS Morrisons Daily, InPost Locker",
+      "18. M34 2ET – Dane Bank Convenience Store, InPost Locker",
+      "19. M34 2WZ – Maxwells Newsagents, InPost Locker",
+      "20. M34 2NA – Go Local Manchester, InPost Locker",
+      "21. SK5 6RE – Best One Convenience, InPost Locker",
+      "22. SK5 6RS – Reddish North Station, InPost Locker",
+      "23. SK5 6JA – C-S Convenience Store, InPost Locker",
+      "24. SK5 6HY – Jams Newsagents, InPost Locker",
+      "25. M19 3HP – RR News, InPost Locker",
+      "26. M19 3DL – IPS Istanbul Daily, InPost Locker",
+      "27. M12 5TW – Alam Superstore, InPost Locker",
+      "28. M13 0GW – Bonaful Sweet House, InPost Locker",
+      "29. M13 0TA – A Plus Academy, InPost Locker",
+      "30. M19 2DD – Younis Cash and Carry, InPost Locker",
+      "31. M19 3NN – TESCO Levenshulme, InPost Locker",
+      "32. M19 2RB – St Andrews Church Levenshulme, InPost Locker",
+      "33. M19 2QD – Essar Garage, InPost Locker",
+      "34. M19 2QD – ALDI Weybrook Road, InPost Locker",
+      "35. SK4 5DL – UW Chartered Accountants, InPost Locker",
+      "36. SK4 5DH – IPS Morrisons Daily, InPost Locker",
+      "37. SK5 7DU – IPS Premier, InPost Locker"
+    ];
 
-    // Load saved stops from localStorage
+    function saveStops() {
+      localStorage.setItem('deliveryStops', JSON.stringify(stops));
+    }
+
     function loadStops() {
       const saved = localStorage.getItem('deliveryStops');
       if (saved) {
         stops = JSON.parse(saved);
-        renderStops();
       }
-    }
-
-    function saveStops() {
-      localStorage.setItem('deliveryStops', JSON.stringify(stops));
+      renderStops();
     }
 
     function addStop() {
@@ -85,7 +122,7 @@
         const navBtn = document.createElement('button');
         navBtn.textContent = 'Navigate';
         navBtn.onclick = () => {
-          const encoded = encodeURIComponent(stop);
+          const encoded = encodeURIComponent(stop.replace(/^\d+\.\s*/, ''));
           window.open(`https://www.google.com/maps/dir/?api=1&destination=${encoded}`, '_blank');
         };
 
@@ -103,7 +140,7 @@
       });
     }
 
-    // Initialize app
+    // Load stops on startup
     loadStops();
   </script>
 </body>
