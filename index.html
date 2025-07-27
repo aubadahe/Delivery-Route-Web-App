@@ -10,6 +10,9 @@
       margin: 20px;
       max-width: 600px;
     }
+    h2 {
+      text-align: center;
+    }
     input, button {
       padding: 10px;
       margin: 5px 0;
@@ -18,93 +21,95 @@
     }
     .stop {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-top: 10px;
-      padding: 10px;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding: 12px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
+      background: #f9f9f9;
     }
-    .stop-buttons button {
-      margin-left: 5px;
+    .stop-info {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    .bubble {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-size: 16px;
+    }
+    .stop-text {
+      font-size: 15px;
+      flex-wrap: wrap;
+    }
+    .navigate-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .navigate-btn:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h2>Delivery Stops (37 Total)</h2>
-  <input type="text" id="addressInput" placeholder="Enter postcode or address" />
-  <button onclick="addStop()">Add Stop</button>
+  <h2>Delivery Route (37 Stops)</h2>
 
   <div id="stopsList"></div>
 
   <script>
-    let stops = [
-      "1. SK4 2PF – GoLocal Stockport Express, InPost Locker",
-      "2. SK4 2PF – IPS Go Local, InPost Locker",
-      "3. SK4 2NA – IPS Morrisons Daily, InPost Locker",
-      "4. SK4 2QN – Esso Wellington Road, InPost Locker",
-      "5. SK5 7NZ – Mabco Petroleum Stockport, InPost Locker",
-      "6. SK5 7RP – Select and Save, InPost Locker",
-      "7. SK5 7LN – Reddish Working Mens Club, InPost Locker",
-      "8. SK5 7HR – IPS Morrisons Daily, InPost Locker",
-      "9. SK5 7EW – Shell Yew Tree, InPost Locker",
-      "10. SK5 7EW – Cheshire Central Car Wash, InPost Locker",
-      "11. SK4 7AA – IPS Morrisons Daily, InPost Locker",
-      "12. SK5 7AE – MORRISONS Reddish, InPost Locker",
-      "13. SK4 5JS – Keswick Stores Go Local Extra, InPost Locker",
-      "14. SK5 7AE – Texaco Broadstone Road, InPost Locker",
-      "15. SK5 6AH – Londis Gorton Road, InPost Locker",
-      "16. SK5 6AH – Local Express, InPost Locker",
-      "17. SK5 6QG – IPS Morrisons Daily, InPost Locker",
-      "18. M34 2ET – Dane Bank Convenience Store, InPost Locker",
-      "19. M34 2WZ – Maxwells Newsagents, InPost Locker",
-      "20. M34 2NA – Go Local Manchester, InPost Locker",
-      "21. SK5 6RE – Best One Convenience, InPost Locker",
-      "22. SK5 6RS – Reddish North Station, InPost Locker",
-      "23. SK5 6JA – C-S Convenience Store, InPost Locker",
-      "24. SK5 6HY – Jams Newsagents, InPost Locker",
-      "25. M19 3HP – RR News, InPost Locker",
-      "26. M19 3DL – IPS Istanbul Daily, InPost Locker",
-      "27. M12 5TW – Alam Superstore, InPost Locker",
-      "28. M13 0GW – Bonaful Sweet House, InPost Locker",
-      "29. M13 0TA – A Plus Academy, InPost Locker",
-      "30. M19 2DD – Younis Cash and Carry, InPost Locker",
-      "31. M19 3NN – TESCO Levenshulme, InPost Locker",
-      "32. M19 2RB – St Andrews Church Levenshulme, InPost Locker",
-      "33. M19 2QD – Essar Garage, InPost Locker",
-      "34. M19 2QD – ALDI Weybrook Road, InPost Locker",
-      "35. SK4 5DL – UW Chartered Accountants, InPost Locker",
-      "36. SK4 5DH – IPS Morrisons Daily, InPost Locker",
-      "37. SK5 7DU – IPS Premier, InPost Locker"
+    const stops = [
+      "SK4 2PF – GoLocal Stockport Express, InPost Locker",
+      "SK4 2PF – IPS Go Local",
+      "SK4 2NA – IPS Morrisons Daily",
+      "SK4 2QN – Esso Wellington Road, InPost Locker",
+      "SK5 7NZ – Mabco Petroleum Stockport, InPost Locker",
+      "SK5 7RP – Select and Save, InPost Locker",
+      "SK5 7LN – Reddish Working Mens Club, InPost Locker",
+      "SK5 7HR – IPS Morrisons Daily",
+      "SK5 7EW – Shell Yew Tree, InPost Locker",
+      "SK5 7EW – Cheshire Central Car Wash, InPost Locker",
+      "SK4 7AA – IPS Morrisons Daily",
+      "SK5 7AE – MORRISONS Reddish, InPost Locker",
+      "SK4 5JS – Keswick Stores Go Local Extra, InPost Locker",
+      "SK5 7AE – Texaco Broadstone Road, InPost Locker",
+      "SK5 6AH – Londis Gorton Road, InPost Locker",
+      "SK5 6AH – Local Express, InPost Locker",
+      "SK5 6QG – IPS Morrisons Daily",
+      "M34 2ET – Dane Bank Convenience Store, InPost Locker",
+      "M34 2WZ – Maxwells Newsagents, InPost Locker",
+      "M34 2NA – Go Local Manchester, InPost Locker",
+      "SK5 6RE – Best One Convenience, InPost Locker",
+      "SK5 6RS – Reddish North Station, InPost Locker",
+      "SK5 6JA – C-S Convenience Store, InPost Locker",
+      "SK5 6HY – IPS Jams Newsagents",
+      "M19 3HP – RR News, InPost Locker",
+      "M19 3DL – IPS Istanbul Daily",
+      "M12 5TW – Alam Superstore, InPost Locker",
+      "M13 0GW – Bonaful Sweet House, InPost Locker",
+      "M13 0TA – A Plus Academy, InPost Locker",
+      "M19 2DD – Younis Cash and Carry, InPost Locker",
+      "M19 3NN – TESCO Levenshulme, InPost Locker",
+      "M19 2RB – St Andrews Church Levenshulme, InPost Locker",
+      "M19 2QD – Essar Garage, InPost Locker",
+      "M19 2QD – ALDI Weybrook Road, InPost Locker",
+      "SK4 5DL – UW Chartered Accountants, InPost Locker",
+      "SK4 5DH – IPS Morrisons Daily",
+      "SK5 7DU – IPS Premier"
     ];
-
-    function saveStops() {
-      localStorage.setItem('deliveryStops', JSON.stringify(stops));
-    }
-
-    function loadStops() {
-      const saved = localStorage.getItem('deliveryStops');
-      if (saved) {
-        stops = JSON.parse(saved);
-      }
-      renderStops();
-    }
-
-    function addStop() {
-      const input = document.getElementById('addressInput');
-      const address = input.value.trim();
-      if (address === '') return;
-      stops.push(address);
-      input.value = '';
-      saveStops();
-      renderStops();
-    }
-
-    function deleteStop(index) {
-      stops.splice(index, 1);
-      saveStops();
-      renderStops();
-    }
 
     function renderStops() {
       const list = document.getElementById('stopsList');
@@ -113,35 +118,35 @@
         const div = document.createElement('div');
         div.className = 'stop';
 
-        const addressText = document.createElement('span');
+        const info = document.createElement('div');
+        info.className = 'stop-info';
+
+        const numberBubble = document.createElement('div');
+        numberBubble.className = 'bubble';
+        numberBubble.textContent = index + 1;
+
+        const addressText = document.createElement('div');
+        addressText.className = 'stop-text';
         addressText.textContent = stop;
 
-        const buttons = document.createElement('div');
-        buttons.className = 'stop-buttons';
+        info.appendChild(numberBubble);
+        info.appendChild(addressText);
 
         const navBtn = document.createElement('button');
+        navBtn.className = 'navigate-btn';
         navBtn.textContent = 'Navigate';
         navBtn.onclick = () => {
-          const encoded = encodeURIComponent(stop.replace(/^\d+\.\s*/, ''));
+          const encoded = encodeURIComponent(stop);
           window.open(`https://www.google.com/maps/dir/?api=1&destination=${encoded}`, '_blank');
         };
 
-        const delBtn = document.createElement('button');
-        delBtn.textContent = 'Delete';
-        delBtn.onclick = () => deleteStop(index);
-
-        buttons.appendChild(navBtn);
-        buttons.appendChild(delBtn);
-
-        div.appendChild(addressText);
-        div.appendChild(buttons);
-
+        div.appendChild(info);
+        div.appendChild(navBtn);
         list.appendChild(div);
       });
     }
 
-    // Load stops on startup
-    loadStops();
+    renderStops();
   </script>
 </body>
 </html>
